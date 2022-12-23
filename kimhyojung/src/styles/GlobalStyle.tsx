@@ -9,10 +9,14 @@ const GlobalStyled = createGlobalStyle`
             font-family: 'LineSeedfont';
             src: url('/fonts/LINESeedKR-Bd.ttf');
         }
+        font-display: swap;
         
     }
     body{
         font-family: 'LineSeedfont';
+        background-image: url('/images/backgroundimg.jpg');
+        background-repeat: no-repeat;
+        background-size:cover;
     }
 
     a{
