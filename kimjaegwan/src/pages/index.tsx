@@ -35,12 +35,15 @@ const Home = () => {
 
     //삭제 기능 구현
     const _onDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(e.target.id); //? id속성이 있으나 린트에서는 없다고 뜸
-        instance.delete(`/todos/${e.target.id}`).then(() => {
+        console.log(e.currentTarget.id);
+        instance.delete(`/todos/${e.currentTarget.id}`).then(() => {
             saveTodos();
         });
         setNewTodo('');
     };
+
+    //수정 기능 구현
+    const _onUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {};
 
     return (
         <>
