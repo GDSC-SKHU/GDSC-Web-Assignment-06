@@ -2,6 +2,8 @@ import { useState, useRef, MouseEvent, FormEvent } from 'react';
 import airtableInstance from '../../lib/api/airtableapi';
 import useTodos from './useTodos';
 import React from 'react';
+import { ERROR_MESSAGE } from '../../constants';
+
 const useaddTodo = () => {
   const { todos, settodos } = useTodos();
   const [newTodo, setnewTodo] = useState<string>('');
@@ -14,19 +16,30 @@ const useaddTodo = () => {
   };
 
   const onsubmit: React.EventHandler<FormEvent> = () => {
-    airtableInstance
-      .post('/todos', {
-        records: [
-          {
-            fields: {
-              Name: newTodo,
+    if (newTodoRef.current == null) {
+      return;
+    }
+    if (newTodoRef.current.value === '') {
+      alert(ERROR_MESSAGE);
+      return;
+    }
+    const addData = async () => {
+      await airtableInstance
+        .post('/todos', {
+          records: [
+            {
+              fields: {
+                Name: newTodo,
+              },
             },
-          },
-        ],
-      })
-      .then((response) => {
-        settodos(response.data.records);
-      });
+          ],
+        })
+        .then((response) => {
+          settodos(response.data.records);
+        });
+    };
+
+    addData();
   };
 
   return { newTodo, onclick, onsubmit, newTodoRef };

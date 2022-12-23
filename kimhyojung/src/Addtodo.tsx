@@ -12,11 +12,10 @@ export default function Addtodo() {
   );
 }
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   border: 1px solid #e0e0e0;
   border-radius: 40px;
   background: none;
-  margin: auto;
   padding: 3px;
   &:focus {
     background: #e0e0e0;
@@ -26,7 +25,7 @@ const StyledInput = styled.input`
   }
 `;
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   background: none;
   border: 1px solid #e0e0e0;
   cursor: pointer;
