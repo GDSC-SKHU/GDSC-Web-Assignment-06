@@ -15,8 +15,6 @@ const useupdateTodo = () => {
     }
 
     const updateData = async () => {
-      alert(updateId);
-      alert(updatetodo);
       await airtableInstance
         .patch('/todos', {
           records: [
