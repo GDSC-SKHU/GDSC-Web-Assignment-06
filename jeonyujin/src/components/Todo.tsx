@@ -3,7 +3,6 @@ import useTodos from "../hooks/useTodos";
 import { instance } from "../libs/api";
 import styled from "styled-components";
 import { Todolist } from "./Todolist";
-import Router from "next/router";
 import router from "next/router";
 
 export default function Todo() {
@@ -49,8 +48,6 @@ export default function Todo() {
       pathname: "/",
     });
   };
-
-  // instance.delete<Response>("/todos");
 
   return (
     <div>

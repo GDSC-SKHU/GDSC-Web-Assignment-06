@@ -59,7 +59,7 @@ const UsageWrpper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-items: center;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const BtnBox = styled.div`
