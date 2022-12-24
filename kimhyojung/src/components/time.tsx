@@ -1,9 +1,20 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
 
 export default function CurrentTime() {
-  const currentDate = new Date();
-  const currentHour = currentDate.getHours().toString();
-  const currentMinute = currentDate.getMinutes().toString();
+  const [currentTime, setcurrentTime] = useState(new Date());
+  const currentHour = currentTime.getHours().toString();
+  const currentMinute = currentTime.getMinutes().toString();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setcurrentTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <>
