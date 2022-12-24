@@ -18,7 +18,7 @@ const useTodos = () => {
 
     /* useEffect가 아무것도 반환하지 않는 걸 방지하기 위해, async함수를 수행해야 함 */
     fetchData();
-  }, [todos]);
+  }, []);
 
   return { todos, settodos };
 };

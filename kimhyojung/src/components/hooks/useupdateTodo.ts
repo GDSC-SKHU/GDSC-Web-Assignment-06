@@ -1,6 +1,6 @@
 import React, { FormEvent, useRef, useState, MouseEvent } from 'react';
 import useTodos from './useTodos';
-import { ERROR_MESSAGE } from '../../constants';
+import { ERROR_MESSAGE, UPDATE_CONFIRM_MESSAGE } from '../../constants';
 import airtableInstance from '../../lib/api/airtableapi';
 
 const useupdateTodo = () => {
@@ -15,21 +15,23 @@ const useupdateTodo = () => {
     }
 
     const updateData = async () => {
-      await airtableInstance
-        .patch('/todos', {
-          records: [
-            {
-              id: updateId,
-              fields: {
-                Name: updatetodo,
-              },
+      alert(UPDATE_CONFIRM_MESSAGE);
+      await airtableInstance.patch('/todos', {
+        records: [
+          {
+            id: updateId,
+            fields: {
+              Name: updatetodo,
             },
-          ],
-        })
-        .then((response) => settodos(response.data.records));
+          },
+        ],
+      });
     };
-
-    updateData();
+    try {
+      updateData();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return { updateId, setupdateId, updatetodo, setupdateTodo, onupdate };

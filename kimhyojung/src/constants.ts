@@ -13,5 +13,6 @@ interface todoState {
 }
 
 const ERROR_MESSAGE: string = '할 일을 입력해주세요';
-export { ERROR_MESSAGE };
+const UPDATE_CONFIRM_MESSAGE: string = '수정이 완료되었습니다';
+export { ERROR_MESSAGE, UPDATE_CONFIRM_MESSAGE };
 export type { records, todoState };
