@@ -31,6 +31,14 @@ export default function Home() {
     setNewTodo("");
   };
 
+  const onDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e.currentTarget.id);
+    instance.delete(`/todos/${e.currentTarget.id}`).then(() => {
+      saveTodos();
+    });
+    setNewTodo("");
+  };
+
   return (
     <div>
       <h1>오늘 할 일</h1>
@@ -38,6 +46,10 @@ export default function Home() {
       {todos.map((eachTodo) => (
         <div key={eachTodo.id}>
           <span>{eachTodo.fields.Name}</span>
+          <button onClick={onDelete} id={eachTodo.id}>
+            삭제
+          </button>
+          <button>수정</button>
         </div>
       ))}
 
