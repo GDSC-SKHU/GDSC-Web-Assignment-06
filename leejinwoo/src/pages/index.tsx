@@ -55,7 +55,7 @@ export default function Home() {
   };
 
   const Airtable = require("airtable");
-  const base = new Airtable({ apiKey: "keyxDZT06vLKQQ68F" }).base(
+  const base = new Airtable({ apiKey: `${process.env.NEXT_PUBLIC_API_TOKEN}` }).base(
     "appYvF8yBrqR7OKYl"
   );
   const onClickDelete = (e: MouseEvent<HTMLButtonElement>) => {
