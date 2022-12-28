@@ -5,13 +5,23 @@ import { instance } from "../libs/api";
 export default function Home() {
   const { todos, saveTodos } = useTodos();
 
+  //submit input 값이 변경되는 것을 감지
   const [newTodo, setNewTodo] = useState<string>("");
+  //update input  값이 변경되는 것을 감지
+  const [updateTodo, setUpdateTodo] = useState<string>("");
 
-  const [currentValue, setcurrentValue] = useState("");
+  //수정 버튼을 누른 그 버튼의 id 값 가져오기
+  const [currentValueId, setCurrentValueId] = useState<string>("");
+  //해당 아이디 값의 name 가져오기
+  const [currentValue, setCurrentValue] = useState("");
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTodo(e.target.value);
-    console.dir(todos);
+  };
+
+  const onNewChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUpdateTodo(e.target.value);
+    console.log(e.target.value);
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -43,18 +53,36 @@ export default function Home() {
     setNewTodo("");
   };
 
-  //수정함수
-  const onUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onUpdate = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(e.currentTarget.id);
+    instance
+      .patch("/todos", {
+        records: [
+          {
+            id: currentValueId,
+            fields: {
+              Name: updateTodo,
+            },
+          },
+        ],
+      })
+      .then(() => {
+        saveTodos();
+      });
+    setUpdateTodo("");
+  };
+
+  //저장된 todoId를 이용하여 placeholder에 뜨게하기
+  const changeTodoId = (e: React.MouseEvent<HTMLButtonElement>) => {
     console.dir(e.currentTarget.id);
 
     const currentValue = todos.filter(
       (value) => value.id === e.currentTarget.id
     );
-    setcurrentValue(currentValue[0].fields.Name);
+    setCurrentValueId(e.currentTarget.id);
+    setCurrentValue(currentValue[0].fields.Name);
   };
-
-  //수정하기 button을 눌렀을때 수정 모달로 가면서 id 값을 전달할 것임. 그렇기때문에 Todo의 고유 id를 받아오는 것을 설정.
-  const changeTodoId = (e: React.MouseEvent<HTMLButtonElement>) => {};
 
   return (
     <div>
@@ -67,7 +95,7 @@ export default function Home() {
             <button onClick={onDelete} id={eachTodo.id}>
               삭제
             </button>
-            <button onClick={onUpdate} id={eachTodo.id}>
+            <button onClick={changeTodoId} id={eachTodo.id}>
               수정
             </button>
           </span>
@@ -79,15 +107,18 @@ export default function Home() {
         <button type="submit">보내기</button>
       </form>
 
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          value={newTodo}
-          onChange={onChange}
-          placeholder={currentValue}
-        />
-        <button type="submit">수정하기</button>
-      </form>
+      <div>
+        <form onSubmit={onUpdate}>
+          <input
+            type="text"
+            id={currentValueId}
+            value={updateTodo}
+            onChange={onNewChange}
+            placeholder={currentValue}
+          />
+          <button type="submit">수정하기</button>
+        </form>
+      </div>
     </div>
   );
 }
