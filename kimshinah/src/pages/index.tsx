@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useTodos from "../hooks/useTodos";
 import { instance } from "../libs/api";
+import styled from "styled-components";
 
 export default function Home() {
   const { todos, saveTodos } = useTodos();
@@ -14,6 +15,8 @@ export default function Home() {
   const [currentValueId, setCurrentValueId] = useState<string>("");
   //해당 아이디 값의 name 가져오기
   const [currentValue, setCurrentValue] = useState("");
+
+  const [style, setStyle] = useState({ display: "none" });
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTodo(e.target.value);
@@ -82,32 +85,39 @@ export default function Home() {
     );
     setCurrentValueId(e.currentTarget.id);
     setCurrentValue(currentValue[0].fields.Name);
+    setStyle({ display: "flex" });
+  };
+
+  const changeStyle = () => {
+    style.display = "none";
   };
 
   return (
-    <div>
+    <WrapperClass>
       <h1>오늘 할 일</h1>
 
+      <TodoPostForm>
+        <form onSubmit={onSubmit}>
+          <input type="text" value={newTodo} onChange={onChange} />
+          <button type="submit">보내기</button>
+        </form>
+      </TodoPostForm>
+
       {todos.map((eachTodo) => (
-        <div key={eachTodo.id}>
-          <span>
-            {eachTodo.fields.Name}
+        <TodoList key={eachTodo.id}>
+          <span>{eachTodo.fields.Name}</span>
+          <div>
             <button onClick={onDelete} id={eachTodo.id}>
               삭제
             </button>
             <button onClick={changeTodoId} id={eachTodo.id}>
               수정
             </button>
-          </span>
-        </div>
+          </div>
+        </TodoList>
       ))}
 
-      <form onSubmit={onSubmit}>
-        <input type="text" value={newTodo} onChange={onChange} />
-        <button type="submit">보내기</button>
-      </form>
-
-      <div>
+      <HideModal style={style}>
         <form onSubmit={onUpdate}>
           <input
             type="text"
@@ -116,9 +126,66 @@ export default function Home() {
             onChange={onNewChange}
             placeholder={currentValue}
           />
-          <button type="submit">수정하기</button>
+          <button type="submit" onClick={changeStyle}>
+            수정하기
+          </button>
         </form>
-      </div>
-    </div>
+      </HideModal>
+    </WrapperClass>
   );
 }
+
+const WrapperClass = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TodoList = styled.div`
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em;
+  max-width: 20em;
+`;
+const TodoPostForm = styled.div`
+  form {
+    display: flex;
+    width: 25em;
+    height: 3em;
+    margin: 1em;
+  }
+  input {
+    width: 85%;
+  }
+`;
+const HideModal = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(1, 1, 1, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  justify-content: center;
+  form {
+    width: 20em;
+    height: 3em;
+    display: flex;
+    justify-content: space-between;
+    margin: 10em 0;
+  }
+  input {
+    width: 18em;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+  button {
+    height: 100%;
+    margin: 0;
+    border: 0;
+  }
+`;
