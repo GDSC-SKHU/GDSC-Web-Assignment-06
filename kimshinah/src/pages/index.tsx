@@ -16,6 +16,7 @@ export default function Home() {
   //해당 아이디 값의 name 가져오기
   const [currentValue, setCurrentValue] = useState("");
 
+  //모달 스타일값 정하기
   const [style, setStyle] = useState({ display: "none" });
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +31,10 @@ export default function Home() {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (newTodo === "") {
+      alert("내용을 입력하세요.");
+      return;
+    }
     instance
       .post("/todos", {
         records: [
@@ -59,6 +64,11 @@ export default function Home() {
   const onUpdate = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(e.currentTarget.id);
+
+    if (updateTodo === "") {
+      alert("내용을 입력하고 수정하세요.");
+      return;
+    }
     instance
       .patch("/todos", {
         records: [
